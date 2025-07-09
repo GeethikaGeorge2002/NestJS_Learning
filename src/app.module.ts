@@ -1,4 +1,4 @@
-import { Module, NestModule,MiddlewareConsumer } from '@nestjs/common';
+import { Module, NestModule,MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CatsController } from './cats/cats.controller';
@@ -17,6 +17,11 @@ export class AppModule implements NestModule {
     // Middleware configuration can go here if needed
     consumer
       .apply(LoggerMiddleware) 
+       .exclude(
+    // Exclude specific routes from LoggerMiddleware
+    { path: 'cats', method: RequestMethod.POST },
+    'cats/{*splat}',
+  )
       .forRoutes(CatsController); // Apply LoggerMiddleware to CatsController routes
   }
 }
