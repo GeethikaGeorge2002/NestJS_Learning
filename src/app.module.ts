@@ -5,11 +5,14 @@ import { CatsController } from './cats/cats.controller';
 import { CatsService } from './cats/cats.service';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { CommonService } from './common/commo.service';
 
 @Module({
   imports: [CatsModule],
   // controllers: [AppController,CatsController],
   // providers: [AppService, CatsService],
+  
+  providers: [CatsService, CommonService],
 })
 
 export class AppModule implements NestModule {

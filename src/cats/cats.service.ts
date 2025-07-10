@@ -53,27 +53,50 @@
 // }
 
 //Circular dependency  resolving example
-// src/cats/cats.service.ts
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+
+// import { Injectable, Inject, forwardRef } from '@nestjs/common';
+// import { CommonService } from 'src/common/commo.service';
+// import { Cat } from './interfaces/cat.interface';
+
+// @Injectable()
+// export class CatsService {
+//   constructor(
+//     @Inject(forwardRef(() => CommonService))
+//     private commonService: CommonService,
+//   ) {}
+
+//   private readonly cats: Cat[] = [];
+
+//   create(cat: Cat) {
+//     this.cats.push(cat);
+//   }
+
+//   async findAll(): Promise<Cat[]> {
+//     console.log('Calling CommonService from CatsService...');
+//     this.commonService.logCatInfo(); // Circular use
+//     return this.cats;
+//   }
+// }
+
+// /MODULAR REFERENCE EXAMPLE
+
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { CommonService } from 'src/common/commo.service';
-import { Cat } from './interfaces/cat.interface';
 
 @Injectable()
-export class CatsService {
-  constructor(
-    @Inject(forwardRef(() => CommonService))
-    private commonService: CommonService,
-  ) {}
+export class CatsService implements OnModuleInit {
+  private commonService: CommonService;
 
-  private readonly cats: Cat[] = [];
+  constructor(private moduleRef: ModuleRef) {}
 
-  create(cat: Cat) {
-    this.cats.push(cat);
+  onModuleInit() {
+    // Dynamically resolve the service
+    this.commonService = this.moduleRef.get(CommonService, { strict: false });
   }
 
-  async findAll(): Promise<Cat[]> {
-    console.log('Calling CommonService from CatsService...');
-    this.commonService.logCatInfo(); // Circular use
-    return this.cats;
+  sayHello() {
+    this.commonService?.log();
   }
 }
+

@@ -8,15 +8,15 @@ import { Cat } from './interfaces/cat.interface';
 @Controller('cats')
 export class CatsController {
   constructor(private catsService: CatsService) {}
-  // @Post()
-  // create(): string {
-  //   return 'This action adds a new cat TOTORO';
-  // }
+  @Post()
+  create(): string {
+    return 'This action adds a new cat TOTORO';
+  }
 
-  // @Get()
-  // findAll(): string {
-  //   return 'This action returns all cats meow';
-  // }
+  @Get()
+  findAll(): string {
+    return 'This action returns all cats meow';
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string): string {
@@ -64,21 +64,21 @@ export class CatsController {
 //   throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 // }
 
-   @Get(':id')
-async findOne(@Param('id') id: string) {
-  // const cat = await this.catsService.findOneById(id);
-  const cat = (await this.catsService.findAll()).find(cat => cat.id === id);
-  if (!cat) {
-    throw new HttpException('Cat not found', HttpStatus.NOT_FOUND);
-  }
-  return cat;
-}
+//    @Get(':id')
+// async findOne(@Param('id') id: string) {
+//   // const cat = await this.catsService.findOneById(id);
+//   const cat = (await this.catsService.findAll()).find(cat => cat.id === id);
+//   if (!cat) {
+//     throw new HttpException('Cat not found', HttpStatus.NOT_FOUND);
+//   }
+//   return cat;
+// }
 
-@Get()
-async findAll(): Promise<Cat[]> {
-  const cats = await this.catsService.findAll(); // await works fine here
-  return cats;
-}
+// @Get()
+// async findAll(): Promise<Cat[]> {
+//   const cats = await this.catsService.findAll(); // await works fine here
+//   return cats;
+// }
 
 
 }
