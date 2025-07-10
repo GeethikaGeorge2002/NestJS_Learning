@@ -1,6 +1,7 @@
 
 export interface Cat {
+  [x: string]: string | number;
   name: string;
-  age: number;
+  age: string | number;
   breed: string;
 }

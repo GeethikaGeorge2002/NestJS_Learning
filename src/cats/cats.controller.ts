@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param,Put,Delete,Query, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param,Put,Delete,Query, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { ListAllEntities } from './dto/list-all-entities.dto';
@@ -49,13 +49,36 @@ export class CatsController {
   //   return `This action removes a #${id} cat`;
   // }
 
-  @Post()
-  async create(@Body() createCatDto: CreateCatDto) {
-    this.catsService.create(createCatDto);
-  }
+  // @Post()
+  // async create(@Body() createCatDto: CreateCatDto) {
+  //   this.catsService.create(createCatDto);
+  // }
 
-  @Get()
-  async findAll(): Promise<Cat[]> {
-    return this.catsService.findAll();
+//   @Get()
+//   async findAll(): Promise<Cat[]> {
+//     return this.catsService.findAll();
+// }
+
+//     @Get()
+// async findAll() {
+//   throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+// }
+
+   @Get(':id')
+async findOne(@Param('id') id: string) {
+  // const cat = await this.catsService.findOneById(id);
+  const cat = (await this.catsService.findAll()).find(cat => cat.id === id);
+  if (!cat) {
+    throw new HttpException('Cat not found', HttpStatus.NOT_FOUND);
+  }
+  return cat;
 }
+
+@Get()
+async findAll(): Promise<Cat[]> {
+  const cats = await this.catsService.findAll(); // await works fine here
+  return cats;
+}
+
+
 }
