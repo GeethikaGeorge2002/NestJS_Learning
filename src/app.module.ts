@@ -30,14 +30,32 @@
 // }
 
 
-// LAZY LOAD EXAMPLE
+// // LAZY LOAD EXAMPLE
 
 
+// import { Module } from '@nestjs/common';
+// import { LazyModuleLoader } from '@nestjs/core';
+// import { ConsumerService } from './common/consumer.service';
+
+// @Module({
+//   providers: [LazyModuleLoader, ConsumerService],
+// })
+// export class AppModule {}
+
+//  CONFIG ENV EXAMPLE
+// app.module.ts
 import { Module } from '@nestjs/common';
-import { LazyModuleLoader } from '@nestjs/core';
-import { ConsumerService } from './common/consumer.service';
+import { ConfigModule } from '@nestjs/config';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
-  providers: [LazyModuleLoader, ConsumerService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // makes ConfigService available everywhere
+    }),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
