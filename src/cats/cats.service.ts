@@ -80,23 +80,46 @@
 
 // /MODULAR REFERENCE EXAMPLE
 
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
-import { CommonService } from 'src/common/commo.service';
+// import { Injectable, OnModuleInit } from '@nestjs/common';
+// import { ModuleRef } from '@nestjs/core';
+// import { CommonService } from 'src/common/commo.service';
+
+// @Injectable()
+// export class CatsService implements OnModuleInit {
+//   private commonService: CommonService;
+
+//   constructor(private moduleRef: ModuleRef) {}
+
+//   onModuleInit() {
+//     // Dynamically resolve the service
+//     this.commonService = this.moduleRef.get(CommonService, { strict: false });
+//   }
+
+//   sayHello() {
+//     this.commonService?.log();
+//   }
+// }
+
+// DATABASE CONFIG USING POSTGRES EXAMPLE
+
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Cat } from 'src/entities/cat.entity';
 
 @Injectable()
-export class CatsService implements OnModuleInit {
-  private commonService: CommonService;
+export class CatsService {
+  constructor(
+    @InjectRepository(Cat)
+    private catsRepository: Repository<Cat>,
+  ) {}
 
-  constructor(private moduleRef: ModuleRef) {}
-
-  onModuleInit() {
-    // Dynamically resolve the service
-    this.commonService = this.moduleRef.get(CommonService, { strict: false });
+  create(catData: Partial<Cat>): Promise<Cat> {
+    const cat = this.catsRepository.create(catData);
+    return this.catsRepository.save(cat);
   }
 
-  sayHello() {
-    this.commonService?.log();
+  findAll(): Promise<Cat[]> {
+    return this.catsRepository.find();
   }
 }
-

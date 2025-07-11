@@ -11,7 +11,8 @@ export class ConsumerService {
   async loadCats() {
     const moduleRef = await this.lazyModuleLoader.load(() => CatsModule);
     const catsService = moduleRef.get(CatsService, { strict: false });
-    return catsService.sayHello();
+    // return catsService.sayHello();
+    return catsService.findAll()
     
   }
 }
