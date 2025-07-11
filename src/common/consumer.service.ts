@@ -12,7 +12,9 @@ export class ConsumerService {
     const moduleRef = await this.lazyModuleLoader.load(() => CatsModule);
     const catsService = moduleRef.get(CatsService, { strict: false });
     // return catsService.sayHello();
-    return catsService.findAll()
+    return  catsService.getCat(1)
+
+    
     
   }
 }

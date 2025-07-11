@@ -60,13 +60,14 @@
 // })
 // export class AppModule {}
 
-// POSTGRSQL EXAMPLE WITH TYPEORM
+// POSTGRSQL EXAMPLE WITH TYPEORM and cache example
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
 import { CatsModule } from './cats/cats.module'; // Your module
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -82,6 +83,11 @@ import { CatsModule } from './cats/cats.module'; // Your module
       database: process.env.DB_NAME,
       autoLoadEntities: true, // Automatically load entities from modules
     
+    }),
+     CacheModule.register({
+      isGlobal: true, // Makes cache available globally
+      ttl: 10,        // Default TTL in seconds
+
     }),
     CatsModule,
   ],

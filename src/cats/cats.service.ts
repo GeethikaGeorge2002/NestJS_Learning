@@ -102,24 +102,58 @@
 
 // DATABASE CONFIG USING POSTGRES EXAMPLE
 
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Cat } from 'src/entities/cat.entity';
+// import { Injectable } from '@nestjs/common';
+// import { InjectRepository } from '@nestjs/typeorm';
+// import { Repository } from 'typeorm';
+// import { Cat } from 'src/entities/cat.entity';
+
+// @Injectable()
+// export class CatsService {
+//   constructor(
+//     @InjectRepository(Cat)
+//     private catsRepository: Repository<Cat>,
+//   ) {}
+
+//   create(catData: Partial<Cat>): Promise<Cat> {
+//     const cat = this.catsRepository.create(catData);
+//     return this.catsRepository.save(cat);
+//   }
+
+//   findAll(): Promise<Cat[]> {
+//     return this.catsRepository.find();
+//   }
+// }
+
+// CACHING EXAMPLE
+
+import { Injectable, Inject } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class CatsService {
   constructor(
-    @InjectRepository(Cat)
-    private catsRepository: Repository<Cat>,
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
   ) {}
 
-  create(catData: Partial<Cat>): Promise<Cat> {
-    const cat = this.catsRepository.create(catData);
-    return this.catsRepository.save(cat);
-  }
+  async getCat(id: number): Promise<string> {
+    const key = `cat-${id}`;
 
-  findAll(): Promise<Cat[]> {
-    return this.catsRepository.find();
+    // Check if in cache
+    const cached = await this.cacheManager.get<string>(key);
+    if (cached) {
+      console.log('Returning from cache');
+      return cached;
+    }
+
+    
+    const cat = `Cat #${id}`;
+
+    // Set to cache with custom TTL (e.g., 30 seconds)
+    await this.cacheManager.set(key, cat, 30);
+
+    console.log('Returning from DB and cached');
+    return cat;
   }
 }

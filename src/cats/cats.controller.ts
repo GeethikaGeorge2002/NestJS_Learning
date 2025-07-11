@@ -83,22 +83,37 @@
 
 
 // DATABASE CONFIG EXAMPLE
-import { Controller, Get, Post, Body } from '@nestjs/common';
+// import { Controller, Get, Post, Body } from '@nestjs/common';
+// import { CatsService } from './cats.service';
+// import { Cat } from 'src/entities/cat.entity';
+
+// @Controller('cats')
+// export class CatsController {
+//   constructor(private readonly catsService: CatsService) {}
+
+//   @Post()
+//   create(@Body() catData: Partial<Cat>): Promise<Cat> {
+//     return this.catsService.create(catData);
+//   }
+
+//   @Get()
+//   findAll(): Promise<Cat[]> {
+//     return this.catsService.findAll();
+//   }
+// }
+
+// CACHING EXAMPLE
+import { Controller, Get, Param } from '@nestjs/common';
 import { CatsService } from './cats.service';
-import { Cat } from 'src/entities/cat.entity';
 
 @Controller('cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
-  @Post()
-  create(@Body() catData: Partial<Cat>): Promise<Cat> {
-    return this.catsService.create(catData);
-  }
-
-  @Get()
-  findAll(): Promise<Cat[]> {
-    return this.catsService.findAll();
+  @Get(':id')
+  getCat(@Param('id') id: string) {
+    return this.catsService.getCat(Number(id));
   }
 }
+
  

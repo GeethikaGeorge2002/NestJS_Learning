@@ -47,9 +47,13 @@ import { Cat } from 'src/entities/cat.entity';
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
+  // @Post()
+  // create(@Body() createCatDto: CreateCatDto): Promise<Cat> {
+  //   return this.catsService.create(createCatDto);
+  // }
   @Post()
-  create(@Body() createCatDto: CreateCatDto): Promise<Cat> {
-    return this.catsService.create(createCatDto);
+  create(@Body() createCatDto: CreateCatDto): string {
+    return `Cat created with name: ${createCatDto.name}, age: ${createCatDto.age}`;
   }
 
   @Get(':id')
