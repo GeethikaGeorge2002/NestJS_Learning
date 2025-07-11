@@ -126,34 +126,59 @@
 
 // CACHING EXAMPLE
 
-import { Injectable, Inject } from '@nestjs/common';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
+// import { Injectable, Inject } from '@nestjs/common';
+// import { CACHE_MANAGER } from '@nestjs/cache-manager';
+// import { Cache } from 'cache-manager';
+
+// @Injectable()
+// export class CatsService {
+//   constructor(
+//     @Inject(CACHE_MANAGER)
+//     private cacheManager: Cache,
+//   ) {}
+
+//   async getCat(id: number): Promise<string> {
+//     const key = `cat-${id}`;
+
+//     // Check if in cache
+//     const cached = await this.cacheManager.get<string>(key);
+//     if (cached) {
+//       console.log('Returning from cache');
+//       return cached;
+//     }
+
+    
+//     const cat = `Cat #${id}`;
+
+//     // Set to cache with custom TTL (e.g., 30 seconds)
+//     await this.cacheManager.set(key, cat, 30);
+
+//     console.log('Returning from DB and cached');
+//     return cat;
+//   }
+// }
+
+
+//SERVICE THAT RETURNS SERIALIZED DATA
+import { Injectable } from '@nestjs/common';
+import { Cat } from 'src/entities/cat.entity';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class CatsService {
-  constructor(
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache,
-  ) {}
+  
+  getCat 
+  // import { CACHE_MANAGER } from '@nestjs/cache-manager';
+    (arg0: number) {
+      throw new Error('Method not implemented.');
+  }
+  private cats: Cat[] = [
+    new Cat({ id: 1, name: 'Milo', age: 2, breed: 'bengal', secretCode: 'xyz123', breedTransformed: 'bengal' }),
+  ];
 
-  async getCat(id: number): Promise<string> {
-    const key = `cat-${id}`;
-
-    // Check if in cache
-    const cached = await this.cacheManager.get<string>(key);
-    if (cached) {
-      console.log('Returning from cache');
-      return cached;
-    }
-
-    
-    const cat = `Cat #${id}`;
-
-    // Set to cache with custom TTL (e.g., 30 seconds)
-    await this.cacheManager.set(key, cat, 30);
-
-    console.log('Returning from DB and cached');
-    return cat;
+  findAll(): Cat[] {
+    return this.cats.map(cat =>
+      plainToInstance(Cat, cat, { excludeExtraneousValues: true }),
+    );
   }
 }

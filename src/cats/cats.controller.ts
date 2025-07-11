@@ -102,17 +102,18 @@
 //   }
 // }
 
-// CACHING EXAMPLE
-import { Controller, Get, Param } from '@nestjs/common';
+// serialization example
+import { Controller, Get } from '@nestjs/common';
 import { CatsService } from './cats.service';
+import { Cat } from 'src/entities/cat.entity';
 
 @Controller('cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
-  @Get(':id')
-  getCat(@Param('id') id: string) {
-    return this.catsService.getCat(Number(id));
+  @Get()
+  getCats(): Cat[] {
+    return this.catsService.findAll();
   }
 }
 

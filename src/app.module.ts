@@ -89,7 +89,7 @@ import { CacheModule } from '@nestjs/cache-manager';
       ttl: 10,        // Default TTL in seconds
 
     }),
-    CatsModule,
+    CatsModule
   ],
 })
 export class AppModule {}

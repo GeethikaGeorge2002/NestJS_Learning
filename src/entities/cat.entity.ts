@@ -1,16 +1,45 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+// import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+// @Entity()
+// export class Cat {
+//   @PrimaryGeneratedColumn()
+//   id: number;
+
+//   @Column()
+//   name: string;
+
+//   @Column()
+//   age: number;
+
+//   @Column()
+//   breed: string;
+// }
+
+// Cat with serialization
+import { Exclude, Expose, Transform } from 'class-transformer';
+
 export class Cat {
-  @PrimaryGeneratedColumn()
+  @Expose()
   id: number;
 
-  @Column()
+  @Expose()
   name: string;
 
-  @Column()
+  @Expose()
   age: number;
 
-  @Column()
+  @Expose()
   breed: string;
+
+  @Exclude()
+  secretCode: string;
+
+  @Expose()
+  @Transform(({ value }) => value.toUpperCase()) // transform breed to uppercase 
+  breedTransformed: string;
+  
+
+  constructor(partial: Partial<Cat>) {
+    Object.assign(this, partial);
+  }
 }
