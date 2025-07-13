@@ -160,25 +160,52 @@
 
 
 //SERVICE THAT RETURNS SERIALIZED DATA
-import { Injectable } from '@nestjs/common';
-import { Cat } from 'src/entities/cat.entity';
-import { plainToInstance } from 'class-transformer';
+// import { Injectable } from '@nestjs/common';
+// import { Cat } from 'src/entities/cat.entity';
+// import { plainToInstance } from 'class-transformer';
+
+// @Injectable()
+// export class CatsService {
+  
+//   getCat 
+//   // import { CACHE_MANAGER } from '@nestjs/cache-manager';
+//     (arg0: number) {
+//       throw new Error('Method not implemented.');
+//   }
+//   private cats: Cat[] = [
+//     new Cat({ id: 1, name: 'Milo', age: 2, breed: 'bengal', secretCode: 'xyz123', breedTransformed: 'bengal' }),
+//   ];
+
+//   findAll(): Cat[] {
+//     return this.cats.map(cat =>
+//       plainToInstance(Cat, cat, { excludeExtraneousValues: true }),
+//     );
+//   }
+// }
+
+// Task scheduling example
+import { Injectable, Logger } from '@nestjs/common';
+import { Cron, CronExpression, Interval, Timeout } from '@nestjs/schedule';
 
 @Injectable()
 export class CatsService {
-  
-  getCat 
-  // import { CACHE_MANAGER } from '@nestjs/cache-manager';
-    (arg0: number) {
-      throw new Error('Method not implemented.');
-  }
-  private cats: Cat[] = [
-    new Cat({ id: 1, name: 'Milo', age: 2, breed: 'bengal', secretCode: 'xyz123', breedTransformed: 'bengal' }),
-  ];
+  private readonly logger = new Logger(CatsService.name);
 
-  findAll(): Cat[] {
-    return this.cats.map(cat =>
-      plainToInstance(Cat, cat, { excludeExtraneousValues: true }),
-    );
+  // Runs every 10 seconds
+  @Cron('*/10 * * * * *') 
+  handleCron() {
+    this.logger.log('  Job running every 10 seconds');
+  }
+
+  // Runs every 5 seconds
+  @Interval(5000)
+  handleInterval() {
+    this.logger.log(' Interval called every 5 seconds');
+  }
+
+  // Runs once after 3 seconds
+  @Timeout(3000)
+  handleTimeout() {
+    this.logger.log(' Timeout called after 3 seconds');
   }
 }

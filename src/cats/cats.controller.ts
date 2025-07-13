@@ -111,10 +111,11 @@ import { Cat } from 'src/entities/cat.entity';
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
-  @Get()
-  getCats(): Cat[] {
-    return this.catsService.findAll();
-  }
+  // @Get()
+  // getCats(): Cat[] {
+  //   // return this.catsService.findAll();
+  //   return this.catsService.handleCron(); // Example of using a service method
+  // }
 }
 
  

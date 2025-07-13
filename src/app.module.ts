@@ -66,8 +66,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
-import { CatsModule } from './cats/cats.module'; // Your module
+import { CatsModule } from './cats/cats.module'; // my module
 import { CacheModule } from '@nestjs/cache-manager';
+import { ScheduleModule } from '@nestjs/schedule'; //  using ScheduleModule for scheduling tasks
 
 @Module({
   imports: [
@@ -89,6 +90,7 @@ import { CacheModule } from '@nestjs/cache-manager';
       ttl: 10,        // Default TTL in seconds
 
     }),
+    ScheduleModule.forRoot(), // If you are using ScheduleModule for enabling scheduling globally
     CatsModule
   ],
 })
